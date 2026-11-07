@@ -1,0 +1,17 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}아두이노 시험{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'exams/student.css' %}">
+  <link rel="stylesheet" href="{% static 'exams/attempt.css' %}?v=2">
+</head>
+<body>
+  <main class="page {% block page_class %}{% endblock %}">
+    <p class="brand">아두이노 시험</p>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

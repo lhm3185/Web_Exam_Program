@@ -1,0 +1,71 @@
+{% extends "exams/base.html" %}
+{% load static %}
+
+{% block title %}{{ exam.title }} · 아두이노 시험{% endblock %}
+
+{% block content %}
+  <header class="card exam-header">
+    <div>
+      <h1>{{ exam.title }}</h1>
+      <p class="muted">{{ student_name }} · 제한 시간 {{ exam.duration_minutes }}분</p>
+    </div>
+    <div class="timer">
+      <span>남은 시간</span>
+      <strong id="time-left" role="timer">{{ attempt.deadline_at|date:"H:i:s" }} 마감</strong>
+    </div>
+  </header>
+
+  <form id="answer-form" method="post" action="{% url 'exams:save_exam' %}"
+        data-exam-url="{% url 'exams:student_exam' %}" data-remaining-ms="{{ remaining_ms }}">
+    {% csrf_token %}
+    <input type="hidden" name="revision" value="{{ attempt.revision }}">
+    <section class="card" aria-labelledby="questions-title">
+      <h2 id="questions-title">시험 문제</h2>
+      <ol class="questions">
+        {% for question, saved in questions %}
+          <li>
+            <div class="question-heading">
+              <h3 id="prompt-{{ question.id }}">{{ question.prompt|linebreaksbr }}</h3>
+              <span class="points">{{ question.kind_label }} · {{ question.points }}점</span>
+            </div>
+            {% if question.kind == 'choice' %}
+              <fieldset aria-labelledby="prompt-{{ question.id }}">
+                {% for choice in question.choices %}
+                  <label class="option">
+                    <input type="radio" name="answer_{{ question.id }}" value="{{ choice.id }}"
+                      {% if choice.id|stringformat:"s" == saved %}checked{% endif %}>
+                    <span>{{ choice.text }}</span>
+                  </label>
+                {% endfor %}
+              </fieldset>
+            {% else %}
+              <textarea name="answer_{{ question.id }}" aria-labelledby="prompt-{{ question.id }}"
+                maxlength="{{ max_answer_length }}"
+                {% if question.kind == 'code' %}class="code-answer" spellcheck="false" autocapitalize="off"{% endif %}
+                >{{ saved }}</textarea>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+    <section class="card submission">
+      <p id="save-status" role="status" aria-live="polite">
+        {% if attempt.last_saved_at %}마지막 저장 {{ attempt.last_saved_at|date:"H:i:s" }}{% else %}답을 입력하면 자동으로 저장합니다.{% endif %}
+      </p>
+      <div class="actions">
+        <button class="secondary" name="action" value="save" type="submit">답안 저장</button>
+        <button id="final-submit" name="action" value="submit" type="submit"
+                aria-controls="submit-confirmation" aria-expanded="false">최종 제출</button>
+      </div>
+      <div id="submit-confirmation" class="submit-confirmation" hidden>
+        <p>현재 답안을 최종 제출할까요?</p>
+        <div class="actions">
+          <button id="cancel-submit" class="secondary" type="button">취소</button>
+          <button id="confirm-submit" type="button">제출하기</button>
+        </div>
+      </div>
+      <noscript>답안 저장 버튼으로 진행 내용을 저장할 수 있습니다.</noscript>
+    </section>
+  </form>
+  <script src="{% static 'exams/student.js' %}?v=2" defer></script>
+{% endblock %}

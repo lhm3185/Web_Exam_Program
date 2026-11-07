@@ -1,0 +1,93 @@
+.exam-header, .submission, .actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.exam-header {
+  position: sticky;
+  top: .5rem;
+  z-index: 1;
+}
+
+.timer {
+  border-radius: .75rem;
+  background: #e6f2ef;
+  padding: .5rem .85rem;
+  color: #116258;
+}
+
+.timer span {
+  font-size: .875rem;
+}
+
+.timer strong {
+  display: block;
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.status-heading {
+  margin-top: 1.5rem;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: .6rem 0 0;
+  min-width: 0;
+}
+
+.option {
+  display: flex;
+  align-items: baseline;
+  gap: .65rem;
+  padding: .45rem 0;
+  font-weight: 400;
+}
+
+.option input {
+  width: auto;
+  accent-color: #116258;
+}
+
+textarea {
+  width: 100%;
+  min-height: 7rem;
+  resize: vertical;
+  border: 1px solid #637e7a;
+  border-radius: .5rem;
+  margin-top: .7rem;
+  padding: .7rem;
+  font: inherit;
+}
+
+.code-answer {
+  min-height: 12rem;
+  background: #f6f8f8;
+  font-family: Consolas, monospace;
+  tab-size: 2;
+}
+
+.submission p {
+  margin: 0;
+}
+
+.submit-confirmation {
+  width: 100%;
+  padding: .9rem;
+  border: 1px solid #d8e4e1;
+  border-radius: .75rem;
+}
+
+.submit-confirmation .actions {
+  justify-content: flex-end;
+  margin-top: .65rem;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: .65;
+}

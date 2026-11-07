@@ -1,0 +1,17 @@
+{% extends "exams/base.html" %}
+
+{% block page_class %}page--narrow{% endblock %}
+
+{% block content %}
+  <section class="card" aria-labelledby="entry-title">
+    <h1 id="entry-title">시험지 열기</h1>
+    <p class="muted">선생님에게 받은 응시 코드를 입력하세요.</p>
+    <form method="post" class="code-form">
+      {% csrf_token %}
+      {{ form.code.label_tag }}
+      {{ form.code }}
+      {{ form.code.errors }}
+      <button type="submit">시험지 열기</button>
+    </form>
+  </section>
+{% endblock %}

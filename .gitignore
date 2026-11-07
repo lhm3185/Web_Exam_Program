@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.py[cod]
+db.sqlite3
+db.sqlite3-*
+.env
+.secret_key
+.student_secret_key
+.access_code_key

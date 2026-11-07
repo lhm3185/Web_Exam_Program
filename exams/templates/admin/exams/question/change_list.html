@@ -1,0 +1,10 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools-items %}
+  {% if has_add_permission %}
+    {% url 'admin:exams_question_add' as add_question_url %}
+    <li><a class="addlink" href="{{ add_question_url }}?kind=choice">객관식 추가</a></li>
+    <li><a class="addlink" href="{{ add_question_url }}?kind=written">주관식 추가</a></li>
+    <li><a class="addlink" href="{{ add_question_url }}?kind=code">코딩 추가</a></li>
+  {% endif %}
+{% endblock %}

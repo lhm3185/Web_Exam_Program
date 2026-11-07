@@ -1,0 +1,52 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .exam-questions .question-content { margin: .6rem 0; }
+    .exam-questions .reference-answer { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .exam-questions .question-tools a { margin-inline-end: 1rem; }
+  </style>
+{% endblock %}
+
+{% block after_field_sets %}
+  {{ block.super }}
+  {% if show_exam_questions %}
+    <fieldset class="module exam-questions">
+      <h2>문제와 정답</h2>
+      {% if can_add_exam_questions %}
+        {% url 'admin:exams_question_add' as question_add_url %}
+        <div class="form-row question-tools">
+          <a href="{{ question_add_url }}?exam={{ original.pk }}&amp;kind=choice">객관식 추가</a>
+          <a href="{{ question_add_url }}?exam={{ original.pk }}&amp;kind=written">주관식 추가</a>
+          <a href="{{ question_add_url }}?exam={{ original.pk }}&amp;kind=code">코딩 추가</a>
+        </div>
+      {% endif %}
+      {% for question in exam_questions %}
+        <div class="form-row">
+          <h3>{{ forloop.counter }}. {{ question.get_kind_display }} · {{ question.points }}점</h3>
+          <div class="question-content">{{ question.prompt|linebreaksbr }}</div>
+          {% if question.kind == "choice" %}
+            <ol>
+              {% for choice in question.choices.all %}
+                <li>{{ choice.text }}{% if choice.is_correct %} <strong>정답</strong>{% endif %}</li>
+              {% empty %}
+                <li>등록된 보기 0개</li>
+              {% endfor %}
+            </ol>
+          {% else %}
+            <strong>모범 답안</strong>
+            {% if question.reference_answer %}
+              <pre class="reference-answer">{{ question.reference_answer }}</pre>
+            {% else %}
+              <p>모범 답안 미등록</p>
+            {% endif %}
+          {% endif %}
+          <a href="{% url 'admin:exams_question_change' question.pk %}">문제 열기</a>
+        </div>
+      {% empty %}
+        <div class="form-row">등록된 문제 0개</div>
+      {% endfor %}
+    </fieldset>
+  {% endif %}
+{% endblock %}

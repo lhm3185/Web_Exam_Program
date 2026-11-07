@@ -1,0 +1,10 @@
+{% extends "exams/base.html" %}
+{% block page_class %}page--narrow{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <h1>답안 확인</h1>
+    <p>{{ error }}</p>
+    <a href="{% url 'exams:student_exam' %}">시험 화면 다시 열기</a>
+  </section>
+{% endblock %}
