@@ -27,7 +27,7 @@ try {
 
     $studentKey = Join-Path $PSScriptRoot '.student_secret_key'
     if (-not (Test-Path -LiteralPath $studentKey)) {
-        & $examPython -c 'from pathlib import Path; from secrets import token_urlsafe; path = Path(".student_secret_key"); path.open("x", encoding="utf-8").write(token_urlsafe(48))'
+        & $examPython -c "from pathlib import Path; from secrets import token_urlsafe; path = Path('.student_secret_key'); path.open('x', encoding='utf-8').write(token_urlsafe(48))"
         if ($LASTEXITCODE -ne 0) { throw 'Could not create the student server key.' }
     }
 
